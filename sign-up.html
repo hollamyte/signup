@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            line-height: 1.6;
+            color: #333;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .all{
+            margin-bottom: 30px;
+        }
+        #signupForm{
+           display: flex;
+           gap: 10px;
+           margin-bottom: 20px;
+        }
+        #signupForm input{
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        #signupForm button{
+            padding: 8px 16px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .all h1{
+            display: flex;
+            justify-content: center;
+        }
+        .user{
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .user h3{
+            margin-top: 0;
+            color: #2c3e50;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .users{
+            overflow-x: auto;
+        }
+        table{
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        thead{
+            background-color: #4caf50;
+            color: white;
+        }
+        th{
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+        td{
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        tbody tr:last-child td{
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="all">
+        <h1>SIGNUP PAGE</h1>
+        <form id="signupForm">
+            <input id="firstname" type="text" placeholder="First Name">
+            <input id="lastname" type="text" placeholder="Last Name">
+            <input id="mail" type="email" placeholder="Enter email">
+            <input id="password" type="password" placeholder="Enter password">
+            <input id="confirm" type="password" placeholder="Confirm password">
+            <button onclick="signup()">Sign up</button>
+        </form>
+    </div>
+    <div class="user">
+        <h3>Registered users</h3>
+        <div class="users">
+            <table>
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th> Email address</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    let users = JSON.parse(localStorage.getItem('users')) || [];
+    displayUsers();
+
+    function displayUsers() {
+        let tbody = document.getElementById('usersTableBody');
+        tbody.innerHTML = '';
+        if (users.length === 0) {
+            tbody.innerHTML = '<tr><td>No users registerd yet</td></tr>'
+            return;
+        }else{
+            users.forEach(user =>{
+            let row = document.createElement('tr');
+            row.innerHTML =`<td>${user.firstname || ''}</td>
+            <td>${user.lastname || ''}</td>
+            <td>${user.email || ''}</td>`;
+
+            tbody.appendChild(row);
+        });
+        }
+       
+    }
+
+    function signup() {
+        event.preventDefault();
+
+        let user = {
+            firstname: document.getElementById('firstname').value.trim(),
+            lastname: document.getElementById('lastname').value.trim(),
+            email: document.getElementById('mail').value.trim(),
+            password: document.getElementById('password').value
+        };
+        if (!user.email || !user.password || !user.firstname || !user.lastname) {
+            alert('plaese fill all fields')
+            return;
+        }else if (user.password !== document.getElementById('confirm').value) {
+            alert('password does not match')
+            return;
+        }else if (users.some(u => u.email === user.email)) {
+            alert('Email already exists')
+            return;
+        }else{
+            users.push(user);
+        localStorage.setItem('users',JSON.stringify(users));
+        alert('Successful,proceed to Login!!!');
+        document.getElementById('signupForm').reset();
+        }
+        
+        
+        
+        displayUsers();
+    }
+     
+        // document.getElementById('signupForm').addEventListener('submit', signup);
+        
+
+
+</script>
+<!-- if (users.some(u => u.email === user.email)) {
+    alert('Email already exists')
+    return;
+}
+else (user.password !== document.getElementById('confirm').value) {
+    alert('password does not match')
+    return;
+} -->
