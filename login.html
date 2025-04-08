@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .all {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        .signup-link {
+            margin-top: 15px;
+            display: block;
+            color: #666;
+        }
+        
+        .signup-link a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="all">
+        <h1>LOGIN PAGE</h1>
+        <form id="loginForm">
+            <input id="email" type="email" placeholder="Enter email" required>            
+            <input id="password" type="password" placeholder="Enter password" required>
+            <button type="submit">Login</button>
+        </form>
+        <div class="signup-link">
+            Don't have an account? <a href="sign-up.html">Sign up</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            login();
+        });
+
+        function login() {
+            let email = document.getElementById('email').value.trim();
+            let password = document.getElementById('password').value;
+            
+            if (!email) {
+                alert('Email is required')
+            }
+            
+            if (!password) {
+                alert('Password is required')
+            }
+            
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+            
+            let user = users.find(u => u.email === email);
+            
+            if (!user) {
+                alert('Email not found. Please sign up first.')
+            }
+            
+            if (user.password !== password) {
+                alert('Incorrect password')
+            }else{
+                alert('Login Successful')
+                localStorage.setItem('currentUser', JSON.stringify({
+                firstName: user.firstname,
+                lastName: user.lastname,
+                email: user.email
+                
+            }));
+            window.location.href = 'dashboard.html';
+
+            }
+            
+           
+            
+        }
+    </script>
+</body>
+</html>

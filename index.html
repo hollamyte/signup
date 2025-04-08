@@ -108,6 +108,10 @@
             </table>
         </div>
     </div>
+    <div class="login-link">
+        Already have an account?
+        <a href="login.html">Login</a>
+    </div>
 </body>
 </html>
 <script>
@@ -144,7 +148,9 @@
         };
         if (!user.email || !user.password || !user.firstname || !user.lastname) {
             alert('plaese fill all fields')
-            return;
+            
+        }else if (user.password.length < 8) {
+            alert('password must not be less than 8 characters')
         }else if (user.password !== document.getElementById('confirm').value) {
             alert('password does not match')
             return;
@@ -156,6 +162,8 @@
         localStorage.setItem('users',JSON.stringify(users));
         alert('Successful,proceed to Login!!!');
         document.getElementById('signupForm').reset();
+
+        window.location.href = 'login.html' 
         }
         
         
